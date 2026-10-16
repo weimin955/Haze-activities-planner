@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-white text-lg tracking-tight">
-                Non-Haze Activities
+                Smart Haze Monitoring
               </span>
               <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-900 text-sky-200 uppercase">
                 Singapore

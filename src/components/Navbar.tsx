@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-slate-900 tracking-tight text-base sm:text-lg">
-                  Non-Haze Activities
+                  Smart Haze Monitoring
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-sky-100 text-sky-800">
                   <ShieldCheck className="w-3 h-3 text-sky-600" /> Singapore

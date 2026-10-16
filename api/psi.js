@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
   const requestHeaders = {
     Accept: 'application/json',
-    'User-Agent': 'Non-Haze-Activities-App/1.0',
+    'User-Agent': 'Smart-Haze-Monitoring-App/1.0',
   };
   if (activeApiKey) {
     requestHeaders['x-api-key'] = activeApiKey;
