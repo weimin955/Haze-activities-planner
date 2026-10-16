@@ -12,12 +12,14 @@ import { VenueFinder } from './components/VenueFinder';
 import { FamilyProfileModal } from './components/FamilyProfileModal';
 import { OneMapSearchModal } from './components/OneMapSearchModal';
 import { ErrorDisplay } from './components/ErrorDisplay';
+import { SmartPlanEvaluator } from './components/SmartPlanEvaluator';
 import { Footer } from './components/Footer';
-import { RegionId, PsiApiResponse, FamilyProfile } from './types/haze';
+import { RegionId, PsiApiResponse, FamilyProfile, WeatherData } from './types/haze';
 import { AlertTriangle, ShieldCheck, Heart, Sparkles, Building2, Wind } from 'lucide-react';
 
 export default function App() {
   const [data, setData] = useState<PsiApiResponse | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<RegionId>('national');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorInfo, setErrorInfo] = useState<{
@@ -139,6 +141,17 @@ export default function App() {
 
       setData(json);
       setErrorInfo(null);
+
+      // Fetch live Singapore 24-hr regional weather forecast
+      try {
+        const weatherRes = await fetch('/api/weather');
+        if (weatherRes.ok) {
+          const wJson: WeatherData = await weatherRes.json();
+          setWeatherData(wJson);
+        }
+      } catch (wErr) {
+        console.warn('Weather fetch warning (non-blocking):', wErr);
+      }
     } catch (err: any) {
       clearTimeout(timeoutId);
       if (err.name === 'AbortError') {
@@ -277,6 +290,14 @@ export default function App() {
               data={data}
               selectedRegion={selectedRegion}
               onSelectRegion={setSelectedRegion}
+            />
+
+            {/* Smart Itinerary Safety & Weather Evaluator */}
+            <SmartPlanEvaluator
+              psiData={data}
+              weatherData={weatherData}
+              familyProfile={familyProfile}
+              selectedRegion={selectedRegion}
             />
 
             {/* Sub-Goal 4: Smart Itinerary Substitutions */}

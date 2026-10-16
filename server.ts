@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import psiHandler from './api/psi.js';
 import healthHandler from './api/health.ts';
 import mapgovHandler from './api/Mapgov.ts';
+import weatherHandler from './api/weather.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +63,22 @@ async function startServer() {
 
   app.all('/api/Mapgov', handleMapgov);
   app.all('/api/mapgov', handleMapgov);
+
+  // Mount /api/weather endpoint
+  app.all('/api/weather', async (req, res) => {
+    try {
+      await weatherHandler(req, res);
+    } catch (err: any) {
+      console.error('API Error in /api/weather:', err);
+      if (!res.headersSent) {
+        res.status(502).json({
+          status: 'error',
+          error: 'Failed to retrieve weather data from NEA.',
+          message: err?.message || 'Weather handler failure',
+        });
+      }
+    }
+  });
 
   if (!isProduction) {
     const { createServer: createViteServer } = await import('vite');

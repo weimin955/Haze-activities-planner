@@ -60,3 +60,49 @@ export interface FamilyProfile {
   hasAsthmaOrHeart: boolean;
   alertPsiThreshold: number;
 }
+
+export interface WeatherData {
+  status: 'success' | 'error';
+  date: string;
+  timestamp: string;
+  general: {
+    forecastText: string;
+    forecastCode: string;
+    validPeriod: string;
+    temperature: { low: number; high: number; unit: string };
+    humidity: { low: number; high: number; unit: string };
+    wind: { direction: string; speed: { low: number; high: number } };
+  };
+  regionalForecasts: Record<string, { code: string; text: string }>;
+  dataSource: string;
+}
+
+export type ActivityIntensity = 'outdoor_strenuous' | 'outdoor_leisure' | 'sheltered' | 'indoor';
+
+export interface UserPlan {
+  id: string;
+  title: string;
+  locationName: string;
+  region: RegionId;
+  activityType: ActivityIntensity;
+  timeSlot: 'Morning' | 'Afternoon' | 'Evening' | 'Full Day';
+  date: string;
+  isCustomLocation?: boolean;
+  evaluation?: PlanEvaluation;
+  swappedAlternativeId?: string;
+  createdAt: string;
+}
+
+export interface PlanEvaluation {
+  status: 'safe' | 'caution' | 'unsafe';
+  verdictTitle: string;
+  summary: string;
+  hazeRiskLevel: 'Minimal' | 'Elevated' | 'High' | 'Severe';
+  weatherCondition: string;
+  psiScore: number;
+  pm25Score: number;
+  temperature: string;
+  suggestedAction: string;
+  recommendedAlternatives: Venue[];
+}
+
