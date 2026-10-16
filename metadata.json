@@ -1,0 +1,6 @@
+{
+  "name": "Non-Haze Activities",
+  "description": "Singapore real-time PSI haze tracker with live NEA data, health advisories, and curated indoor attractions, dining, and activities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
