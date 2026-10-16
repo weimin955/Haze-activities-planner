@@ -10,6 +10,7 @@ import { SingaporePsiMap } from './components/SingaporePsiMap';
 import { ItinerarySwaps } from './components/ItinerarySwaps';
 import { VenueFinder } from './components/VenueFinder';
 import { FamilyProfileModal } from './components/FamilyProfileModal';
+import { OneMapSearchModal } from './components/OneMapSearchModal';
 import { ErrorDisplay } from './components/ErrorDisplay';
 import { Footer } from './components/Footer';
 import { RegionId, PsiApiResponse, FamilyProfile } from './types/haze';
@@ -29,6 +30,7 @@ export default function App() {
 
   // Family profile for sensitive health alerts (Freemium personalization)
   const [familyModalOpen, setFamilyModalOpen] = useState(false);
+  const [oneMapModalOpen, setOneMapModalOpen] = useState(false);
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile>(() => {
     try {
       const saved = localStorage.getItem('non_haze_family_profile');
@@ -190,6 +192,7 @@ export default function App() {
         isLoading={isLoading}
         onRefresh={fetchPsiData}
         onOpenFamilyModal={() => setFamilyModalOpen(true)}
+        onOpenOneMapModal={() => setOneMapModalOpen(true)}
         hasActiveFamilyThreshold={
           familyProfile.hasElderly || familyProfile.hasChildren || familyProfile.hasAsthmaOrHeart
         }
@@ -300,6 +303,12 @@ export default function App() {
         onClose={() => setFamilyModalOpen(false)}
         profile={familyProfile}
         onSaveProfile={saveFamilyProfile}
+      />
+
+      {/* OneMap SG Search Modal */}
+      <OneMapSearchModal
+        isOpen={oneMapModalOpen}
+        onClose={() => setOneMapModalOpen(false)}
       />
 
       {/* Sub-Goal 5: Footer crediting "Data: National Environment Agency" */}

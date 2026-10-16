@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import psiHandler from './api/psi.js';
+import healthHandler from './api/health.ts';
+import mapgovHandler from './api/Mapgov.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +31,37 @@ async function startServer() {
       }
     }
   });
+
+  // Mount /api/health endpoint
+  app.all('/api/health', async (req, res) => {
+    try {
+      await healthHandler(req, res);
+    } catch (err: any) {
+      console.error('API Error in /api/health:', err);
+      if (!res.headersSent) {
+        res.status(500).json({ status: 'error', message: err?.message || 'Health check failed' });
+      }
+    }
+  });
+
+  // Mount /api/Mapgov & /api/mapgov (OneMap live catalogue search)
+  const handleMapgov = async (req: any, res: any) => {
+    try {
+      await mapgovHandler(req, res);
+    } catch (err: any) {
+      console.error('API Error in /api/Mapgov:', err);
+      if (!res.headersSent) {
+        res.status(502).json({
+          status: 'error',
+          error: 'Failed to retrieve data from OneMap Singapore.',
+          message: err?.message || 'OneMap handler failure',
+        });
+      }
+    }
+  };
+
+  app.all('/api/Mapgov', handleMapgov);
+  app.all('/api/mapgov', handleMapgov);
 
   if (!isProduction) {
     const { createServer: createViteServer } = await import('vite');

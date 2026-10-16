@@ -10,6 +10,7 @@ interface NavbarProps {
   isLoading: boolean;
   onRefresh: () => void;
   onOpenFamilyModal: () => void;
+  onOpenOneMapModal: () => void;
   hasActiveFamilyThreshold: boolean;
 }
 
@@ -21,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   isLoading,
   onRefresh,
   onOpenFamilyModal,
+  onOpenOneMapModal,
   hasActiveFamilyThreshold,
 }) => {
   const regions: { id: RegionId; label: string }[] = [
@@ -107,6 +109,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               {hasActiveFamilyThreshold && (
                 <span className="w-2 h-2 rounded-full bg-amber-500"></span>
               )}
+            </button>
+
+            {/* OneMap SG Live Search Trigger */}
+            <button
+              onClick={onOpenOneMapModal}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-colors border border-teal-200 bg-teal-50 hover:bg-teal-100/80 text-teal-800 cursor-pointer shadow-2xs"
+              title="OneMap Singapore live postal and address catalogue search (/api/Mapgov)"
+            >
+              <MapPin className="w-4 h-4 text-teal-600" />
+              <span className="hidden sm:inline">OneMap SG</span>
             </button>
 
             {/* Refresh Button */}
